@@ -1,0 +1,81 @@
+
+#chooseCameraDiv {
+    width: 400px; 
+    margin-left: auto; 
+    margin-right: auto;
+}
+
+#panelDiv {
+    position: relative;
+    width: 400px;
+    height: 400px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 5px;
+}
+
+#localCanvas {
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 400px;
+    height: 400px;
+}
+
+#localVideo {
+    display: block;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 400px;
+    height: 400px;
+    -webkit-transition-property: opacity;
+    -webkit-transition-duration: 2s;
+    opacity: 0;
+}
+
+#takeSnapshotBtuuon {
+    clear: both;
+    margin-top: 0px;
+    margin-left:auto;
+    margin-right:auto;
+    display:block;
+    width: 120px;
+}
+
+#photoList {
+    margin-top: 85px;
+    margin-left:auto;
+    margin-right:auto;
+}
+
+.photodiv {
+    float: left;
+    margin-right: 10px;
+}
+
+.faceImage {
+    width: auto;
+    height: 95px;
+    max-width: 100%;
+	max-height: 100%;
+    border: 3px solid #FF5151;
+    background-color: rgb(34, 34, 34);
+}
+
+.removePhotoButton {
+    float: right;
+    top: 0px;
+    margin: auto;
+    background-color:#FF5151;
+    border: none;
+    /*border-radius:10px;*/
+    color: white;
+    font-family: 'Roboto', sans-serif;
+    font-size: 0.9em;
+    width: 21px;
+    height: 17px;
+    z-index: 10;
+}

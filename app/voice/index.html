@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Voice Detect</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
+    <script src="https://webrtc.github.io/adapter/adapter-latest.js"></script>
+
+    <script src="js/audiodisplay.js"></script>
+	<script src="js/recorderjs/recorder.js"></script>
+    
+    <link rel="stylesheet" type="text/css" href="css/elements.css" />
+    <link rel="stylesheet" type="text/css" href="css/main.css" />
+</head>
+<body>
+    <div id="viz">
+        <canvas id="analyser" width="1024" height="500"></canvas>
+        <!-- <canvas id="wavedisplay" width="1024" height="500"></canvas> -->
+    </div>
+    <div id="controls">
+        <img id="record" src="images/mic128.png" onclick="toggleRecording(this);">
+        <a id="save" href="#">Voice File</a>
+    </div>
+    
+</body>
+<script type="text/javascript" src="app.js"></script>
+</html>

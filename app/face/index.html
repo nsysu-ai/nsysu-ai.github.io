@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Face Detect</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
+    <script src="https://webrtc.github.io/adapter/adapter-latest.js"></script>
+
+    <script type="text/javascript" src="js/ccv.js"></script>
+    <script type="text/javascript" src="js/face.js"></script>
+    <script type="text/javascript" src="js/common.js"></script>
+    
+    <link rel="stylesheet" type="text/css" href="css/elements.css" />
+    <link rel="stylesheet" type="text/css" href="css/main.css" />
+</head>
+<body>
+    <div id="mainDiv">
+        <div id="chooseCameraDiv">
+            <label for="videoSource">Camera source: </label><select id="videoSource"></select>
+        </div>
+        <div id="panelDiv">
+            <video id="localVideo" autoplay playsinline muted></video>
+            <canvas id="localCanvas"></canvas>
+            <button id="takeSnapshotBtuuon" class="normalButton" onclick="takeSnapshotBtuuon_click()">拍照</button>
+        </div>
+        <div id="photoList">
+            <div id="photo1" class="photodiv" style="display:none">
+                <button id="btn1" class="removePhotoButton" onclick="removePhotoButton_click(this.id)">X</button>
+                <img id="faceImage1" class="faceImage"/>
+            </div>
+            <div id="photo2" class="photodiv" style="display:none">
+                <button id="btn2" class="removePhotoButton" onclick="removePhotoButton_click(this.id)">X</button>
+                <img id="faceImage2" class="faceImage"/>
+            </div>
+            <div id="photo3" class="photodiv" style="display:none">
+                <button id="btn3" class="removePhotoButton" onclick="removePhotoButton_click(this.id)">X</button>
+                <img id="faceImage3" class="faceImage"/>
+            </div>
+            <div id="photo4" class="photodiv" style="display:none">
+                <button id="btn4" class="removePhotoButton" onclick="removePhotoButton_click(this.id)">X</button>
+                <img id="faceImage4" class="faceImage"/>
+            </div>
+            <div id="photo5" class="photodiv" style="display:none">
+                <button id="btn5" class="removePhotoButton" onclick="removePhotoButton_click(this.id)">X</button>
+                <img id="faceImage5" class="faceImage"/>
+            </div>
+        </div>
+    </div>
+</body>
+<script type="text/javascript" src="app.js"></script>
+</html>

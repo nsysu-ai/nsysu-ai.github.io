@@ -1,0 +1,76 @@
+html { overflow: hidden; }
+body { 
+    font: 14pt Arial, sans-serif; 
+    background: rgb(255, 255, 255);
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    width: 100%;
+    margin: 0 0;
+}
+canvas { 
+    display: inline-block; 
+    background: #202020; 
+    width: 100%;
+    height: 100%;
+    box-shadow: 0px 0px 10px #3c3c3c;
+}
+/*
+#controls {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around;
+    height: 20%;
+    width: 100%;
+}*/
+
+#controls {
+    height: 180px;
+    width: 100%;
+    margin-top: 45px;
+    margin-left:15px;
+    margin-right:10px;
+}
+
+
+#record { height: 15vh; }
+/*
+#record.recording { 
+    background: red;
+    background: -webkit-radial-gradient(center, ellipse cover, #ff0000 0%,lightgrey 75%,lightgrey 100%,#7db9e8 100%); 
+    background: -moz-radial-gradient(center, ellipse cover, #ff0000 0%,lightgrey 75%,lightgrey 100%,#7db9e8 100%); 
+    background: radial-gradient(center, ellipse cover, #ff0000 0%,lightgrey 75%,lightgrey 100%,#7db9e8 100%); 
+}*/
+#record.recording { 
+    background: red;
+    background: -webkit-radial-gradient(center, ellipse cover, #ff0000 0%,#ffffff 75%,#ffffff 100%,#7db9e8 100%); 
+    background: -moz-radial-gradient(center, ellipse cover, #ff0000 0%,#ffffff 75%,#ffffff 100%,#7db9e8 100%); 
+    background: radial-gradient(center, ellipse cover, #ff0000 0%,#ffffff 75%,#ffffff 100%,#7db9e8 100%); 
+}
+
+
+
+#viz {
+    margin-top: 20px;
+    margin-left:50px;
+    margin-right:0px;
+}
+
+#save {
+    width: 100%;
+    margin-top: 90px;
+    margin-left: 22px;
+    font-size: 0.8em;
+}
+
+/*
+@media (orientation: landscape) {
+    body { flex-direction: row;}
+    #controls { flex-direction: column; height: 100%; width: 10%;}
+    #viz { height: 100%; width: 90%;}
+}*/
+
+body { flex-direction: row;}
+#controls { flex-direction: column; height: 100%; width: 15%;}
+#viz { height: 180px; width: 90%;}
