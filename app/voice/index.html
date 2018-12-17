@@ -16,6 +16,8 @@
     <link rel="stylesheet" type="text/css" href="css/main.css" />
 </head>
 <body>
+    <button id="startButton" class="normalButton" onclick="toggleStartButton()">開啟麥克風</button>
+
     <div id="viz">
         <canvas id="analyser" width="1024" height="500"></canvas>
         <!-- <canvas id="wavedisplay" width="1024" height="500"></canvas> -->
@@ -24,7 +26,6 @@
         <img id="record" src="images/mic128.png" onclick="toggleRecording(this);">
         <a id="save" href="#">Voice File</a>
     </div>
-    
 </body>
 <script type="text/javascript" src="app.js"></script>
 </html>

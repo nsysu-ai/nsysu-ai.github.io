@@ -4,7 +4,8 @@
 
 window.AudioContext = window.AudioContext || window.webkitAudioContext;
 
-var audioContext = new AudioContext();
+//var audioContext = new AudioContext();
+var audioContext = null;
 var audioInput = null,
     realAudioInput = null,
     inputPoint = null,
@@ -42,6 +43,8 @@ function doneEncoding( blob ) {
 }
 
 function toggleRecording( e ) {
+    var audioContext = new AudioContext();
+
     if (e.classList.contains("recording")) {
         // stop recording
         audioRecorder.stop();
@@ -172,4 +175,10 @@ function initAudio() {
         });
 }
 
-window.addEventListener('load', initAudio );
+//window.addEventListener('load', initAudio );
+
+function toggleStartButton() {
+    console.log("Hello world!");
+    audioContext = new AudioContext();
+    initAudio();
+}
