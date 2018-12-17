@@ -178,7 +178,9 @@ function initAudio() {
 //window.addEventListener('load', initAudio );
 
 function toggleStartButton() {
-    console.log("Hello world!");
+    console.log("Open microphone.");
     audioContext = new AudioContext();
     initAudio();
+
+    document.getElementById("startButton").style.display = "none";
 }
