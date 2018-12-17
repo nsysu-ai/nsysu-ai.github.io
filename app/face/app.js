@@ -120,13 +120,21 @@ function gotStream(stream) {
     localVideo.srcObject = stream;
     localStream = stream;
     
-/*** 
- * 先關閉"臉部偵測"，如有需要再開啟：
-    if (pollTimerId) {
-        clearInterval(pollTimerId);
+
+    if (/Mobi/.test(navigator.userAgent)) {
+        // mobile
+        //console.log("mobile");
+    } else {
+        // desktop
+        //console.log("desktop");
+
+        if (pollTimerId) {
+            clearInterval(pollTimerId);
+        }
+        pollTimerId = setInterval(poll, 1000);
     }
-    pollTimerId = setInterval(poll, 1000);
-**/
+
+
 
     // Refresh button list in case labels have become available
     return navigator.mediaDevices.enumerateDevices();
