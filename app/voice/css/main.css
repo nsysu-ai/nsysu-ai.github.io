@@ -29,8 +29,8 @@ canvas {
     height: 180px;
     width: 100%;
     margin-top: 45px;
-    margin-left:15px;
-    margin-right:10px;
+    margin-left:5px;
+    margin-right:0px;
 }
 
 
@@ -53,7 +53,7 @@ canvas {
 
 #viz {
     margin-top: 20px;
-    margin-left:50px;
+    margin-left:20px;
     margin-right:0px;
 }
 
@@ -72,5 +72,5 @@ canvas {
 }*/
 
 body { flex-direction: row;}
-#controls { flex-direction: column; height: 100%; width: 15%;}
+#controls { flex-direction: column; height: 100%; width: 40%;}
 #viz { height: 180px; width: 90%;}
