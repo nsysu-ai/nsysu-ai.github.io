@@ -46,9 +46,11 @@
 }
 
 #photoList {
+    width:850px;
     margin-top: 85px;
     margin-left:auto;
     margin-right:auto;
+    
 }
 
 .photodiv {
@@ -79,3 +81,9 @@
     height: 17px;
     z-index: 10;
 }
+
+
+@media (max-width: 850px){ 
+    #photoList {width: 100%;}
+}
+
