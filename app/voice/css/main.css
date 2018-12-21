@@ -75,15 +75,24 @@ canvas {
     height: 180px;
 }
 
-#testAudioPlayer {
+#audioPlayerDiv {
     clear: both;
     margin-top: 20px;
     margin-left:20px;
     display:block;
+    width: 66%;
+}
+
+#testAudioPlayer {
+    clear: both;
+    margin-top: 0px;
+    margin-left:auto;
+    margin-right:auto;
+    display:block;
 }
 
 #showTextarea {
-    width: 73%;
+    width: 68%;
     margin-top: 20px;
     margin-left:20px;
 }
@@ -97,4 +106,4 @@ canvas {
 
 #voiceDiv { display: flex; flex-direction: row;}
 #controls { display: flex; flex-direction: row; height: 100%; width: 30%;}
-#viz { height: 180px; width: 90%;}
+#viz { height: 180px; width: 70%;}

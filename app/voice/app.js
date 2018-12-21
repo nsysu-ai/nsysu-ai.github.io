@@ -57,9 +57,8 @@ function toggleRecording( e ) {
         e.classList.add("recording");
         audioRecorder.clear();
         audioRecorder.record();
-
-        let audioplayer = document.getElementById("testAudioPlayer");
-        audioplayer.style.display = 'none';
+        
+        document.getElementById("audioPlayerDiv").style.display = 'none';
     }
 }
 

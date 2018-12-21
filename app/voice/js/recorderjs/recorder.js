@@ -114,7 +114,7 @@ DEALINGS IN THE SOFTWARE.
 
       let audioplayer = document.getElementById("testAudioPlayer");
       audioplayer.src = url;
-      audioplayer.style.display = 'block';
+      document.getElementById("audioPlayerDiv").style.display = 'block';
     }
   
     window.Recorder = Recorder;
