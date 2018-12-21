@@ -161,9 +161,7 @@ videoSelect.onchange = start;
 // start
 var mainDiv = document.getElementById("mainDiv");
 mainDiv.style.left = (1200/2 - 500/2) + "px";
-
-var userUUID = "tmpuser@" + generateUUID();
-console.log(userUUID);
+var userUUID = null;
 
 start();
 
@@ -230,6 +228,8 @@ function takeSnapshotBtuuon_click() {
             if (suffixNum == 5) {
                 document.getElementById("takeSnapshotBtuuon").style.background='#01b468';
                 document.getElementById("takeSnapshotBtuuon").innerHTML = "上傳";
+                userUUID = "tmpuser@" + generateUUID();
+                console.log(userUUID);
             }
             
             resolve(context);

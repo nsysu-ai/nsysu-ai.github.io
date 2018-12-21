@@ -75,6 +75,13 @@ canvas {
     height: 180px;
 }
 
+#testAudioPlayer {
+    clear: both;
+    margin-top: 15px;
+    margin-left:10px;
+    display:block;
+}
+
 #showTextarea {
     width: 73%;
     margin-top: 20px;

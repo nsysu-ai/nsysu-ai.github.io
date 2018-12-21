@@ -111,6 +111,10 @@ DEALINGS IN THE SOFTWARE.
       var link = document.getElementById("save");
       link.href = url;
       link.download = filename || 'output.wav';
+
+      let audioplayer = document.getElementById("testAudioPlayer");
+      audioplayer.src = url;
+      audioplayer.style.display = 'block';
     }
   
     window.Recorder = Recorder;
