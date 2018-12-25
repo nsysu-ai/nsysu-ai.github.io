@@ -17,6 +17,21 @@
     <link rel="stylesheet" type="text/css" href="css/main.css" />
 </head>
 <body>
+    <div id="progressDiv" style="display:none;">
+        <div id ="progressMsg">處理中...</div>
+        <img style="margin-left:auto; margin-right:auto; display:block; margin-top:25px; margin-bottom:20px;" src="images/ajax-loader.gif"/>
+        <br>
+    </div>
+    <div id ="showMsg1">請將臉「正面」朝向鏡頭，並拍照</div>
+    
+    <div id="faceCompareDiv" style="display:none;">
+        <div id ="showMsg2">是同一人?</div>
+        <img id="selfFaceImage" class="faceCompareImage"/>
+        <div style="text-align:center; width:100px; margin-left:auto; margin-right:auto; margin-top:12px; margin-bottom:12px; font-weight:bold; font-size:2em;">VS.</div>
+        <img id="comparedFaceImage" class="faceCompareImage"/>
+        <button id="restartButton" class="normalButton" onclick="restartButton_click()">重新試玩</button>
+    </div>
+
     <div id="mainDiv">
         <div id="chooseCameraDiv">
             <label for="videoSource">Camera source: </label><select id="videoSource"></select>
@@ -24,7 +39,7 @@
         <div id="panelDiv">
             <video id="localVideo" autoplay playsinline muted></video>
             <canvas id="localCanvas"></canvas>
-            <button id="takeSnapshotBtuuon" class="normalButton" onclick="takeSnapshotBtuuon_click()">拍照</button>
+            <button id="takeSnapshotButton" class="normalButton" onclick="takeSnapshotButton_click()">拍照</button>
         </div>
         <div id="photoList">
             <div id="photo1" class="photodiv" style="display:none">

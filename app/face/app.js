@@ -182,11 +182,92 @@ function generateUUID() {
 
 //---------------------------------------------
 
-var photoList = [];
+var isFaceCompare = false;
+var photoList = ["", "", "", "", ""];
 
-function takeSnapshotBtuuon_click() {
+
+function getCurrentPhotoListIndex() {
+    for (let i = 0; i < 5; i++) {
+        if (photoList[i] === "") {
+            return i;
+        }
+    }
+    return -1;
+}
+
+function takeSnapshotButton_click() {
+    if (isFaceCompare == true) {
+        takeComparedPhoto();
+    } else {
+        let photoIndex = getCurrentPhotoListIndex();
+
+        if (photoIndex >= 0 && photoIndex < 5) {
+            handleTakePhoto();
+        } else {
+            uploadPhotos();  //上傳
+        }
+    }
+}
+
+function takeComparedPhoto() {
+    let imageData1 = photoList[0];
+    document.getElementById('selfFaceImage').src = imageData1;
+
+    const myPromise = new Promise((resolve, reject) => {
+        let myvideo = document.getElementById('localVideo');
+        let tempCanvas = document.createElement('canvas');
+        let context = tempCanvas.getContext('2d');
+
+        let x = 0;
+        let y = 0;
+        let width = myvideo.videoWidth;
+        let height = myvideo.videoHeight;
+    
+        tempCanvas.width = width;
+        tempCanvas.height = height;
+
+        context.drawImage(myvideo, x, y, width, height, 0, 0, width, height);
+        let imageData2 = context.canvas.toDataURL("image/png");
+        document.getElementById('comparedFaceImage').src = imageData2;
+        
+        document.getElementById('faceCompareDiv').style.display = 'block';
+        document.getElementById('mainDiv').style.display = 'none';
+
+        resolve(context);
+    });
+
+    myPromise.then(clipImageDone, null);
+}
+
+//上傳照片
+function uploadPhotos() {
+    document.getElementById('progressDiv').style.display = 'block';
+    document.getElementById('progressMsg').innerHTML = "上傳中...";
+    document.getElementById('mainDiv').style.display = 'none';
+    document.getElementById('photoList').style.display = 'none';
+
+    setTimeout(function(){
+        document.getElementById('progressDiv').style.display = 'none';
+        document.getElementById('mainDiv').style.display = 'block';
+
+        document.getElementById('showMsg1').style.display = 'block';
+        document.getElementById('showMsg1').innerHTML = "上傳成功！！";
+
+        document.getElementById("takeSnapshotButton").style.background='#0072e3';
+        document.getElementById("takeSnapshotButton").innerHTML = "拍照 & 比對";
+
+        isFaceCompare = true;
+
+        setTimeout(function(){
+            $( "#showMsg1" ).fadeOut(1500);
+        }, 1000);
+    }, 2000);
+}
+
+function handleTakePhoto() {
+    let photoNum = photoList.length;
+
     const myFirstPromise = new Promise((resolve, reject) => {
-        //
         // 執行一些非同步作業，最終呼叫:
         //
         //   resolve(someValue); // 實現
@@ -195,7 +276,6 @@ function takeSnapshotBtuuon_click() {
         //
 
         let myvideo = document.getElementById('localVideo');
-        
         let tempCanvas = document.createElement('canvas');
         let context = tempCanvas.getContext('2d');
     
@@ -212,63 +292,104 @@ function takeSnapshotBtuuon_click() {
         tempCanvas.width = width;
         tempCanvas.height = height;
 
-        let photoNum = photoList.length;
+        let photoIndex = getCurrentPhotoListIndex();
 
-        if (photoNum < 5) {
+        if (photoIndex >= 0 && photoIndex < 5) {
             context.drawImage(myvideo, x, y, width, height, 0, 0, width, height);
             let imageData = context.canvas.toDataURL("image/png");
-            let suffixNum = photoNum + 1;
+            let suffixNum = photoIndex + 1;
             let imgDivName = "faceImage" + suffixNum.toString();
             let photoDivName = "photo" + suffixNum.toString();
             document.getElementById(imgDivName).src = imageData;
             document.getElementById(photoDivName).style.display = 'block';  
 
-            photoList.push(imageData);
-
-            if (suffixNum == 5) {
-                document.getElementById("takeSnapshotBtuuon").style.background='#01b468';
-                document.getElementById("takeSnapshotBtuuon").innerHTML = "上傳";
-                userUUID = "tmpuser@" + generateUUID();
-                console.log(userUUID);
-            }
+            photoList[photoIndex] = imageData;
             
+            checkPhotoFulled();
+
             resolve(context);
         } else {
             //reject("failure!");
-
         }
     });
 
     myFirstPromise.then(clipImageDone, null);
 }
 
-function clipImageDone(context) {
-    // context.canvas.toBlob(function(blob) {
-    //     setTimeout(function(){
-    //         processImage(blob);
-    //     }, 500);
-    // });
+function checkPhotoFulled() {
+    $("#showMsg1").hide();
+    let photoIndex = getCurrentPhotoListIndex();
+
+    if (photoIndex >= 0 && photoIndex < 5) {
+        document.getElementById("takeSnapshotButton").style.background='#d84a38';
+        document.getElementById("takeSnapshotButton").innerHTML = "拍照";
+    }
+
+    if (photoIndex == 0){
+        document.getElementById('showMsg1').innerHTML = "請將臉「正面」朝向鏡頭，並拍照";
+        $("#showMsg1").fadeIn(800);
+    }
+    else if (photoIndex == 1) {
+        document.getElementById('showMsg1').innerHTML = "請將臉稍微朝向「右邊」，並拍照";
+        $("#showMsg1").fadeIn(800);
+    }
+    else if (photoIndex == 2) {
+        document.getElementById('showMsg1').innerHTML = "請將臉稍微朝向「左邊」，並拍照";
+        $("#showMsg1").fadeIn(800);
+    }
+    else if (photoIndex == 3) {
+        document.getElementById('showMsg1').innerHTML = "請將臉稍微朝向「上方」，並拍照";
+        $("#showMsg1").fadeIn(800);
+    }
+    else if (photoIndex == 4) {
+        document.getElementById('showMsg1').innerHTML = "請將臉稍微朝向「下方」，並拍照";
+        $("#showMsg1").fadeIn(800);
+    }
+    else {
+        document.getElementById("takeSnapshotButton").style.background='#01b468';
+        document.getElementById("takeSnapshotButton").innerHTML = "上傳";
+        userUUID = "tmpuser@" + generateUUID();
+        console.log(userUUID);
+    }
 }
 
+function clipImageDone(context) {
+
+}
 
 function removePhotoButton_click(btnId) {
     console.log(btnId);
 
     if (btnId === "btn1") {
-        photoList.splice(0, 1);
-    } else if (btnId === "btn2") {
-        photoList.splice(1, 1);
-    } else if (btnId === "btn3") {
-        photoList.splice(2, 1);
-    } else if (btnId === "btn4") {
-        photoList.splice(3, 1);
-    } else if (btnId === "btn5") {
-        photoList.splice(4, 1);
+        //photoList.splice(0, 1);
+        photoList[0] = "";
+        document.getElementById('photo1').style.display = 'none';
+    }
+    else if (btnId === "btn2") {
+        //photoList.splice(1, 1);
+        photoList[1] = "";
+        document.getElementById('photo2').style.display = 'none';
+    }
+    else if (btnId === "btn3") {
+        //photoList.splice(2, 1);
+        photoList[2] = "";
+        document.getElementById('photo3').style.display = 'none';
+    } 
+    else if (btnId === "btn4") {
+        //photoList.splice(3, 1);
+        photoList[3] = "";
+        document.getElementById('photo4').style.display = 'none';
+    } 
+    else if (btnId === "btn5") {
+        //photoList.splice(4, 1);
+        photoList[4] = "";
+        document.getElementById('photo5').style.display = 'none';
     }
 
-    updatePhotosAppear();
+    checkPhotoFulled();
 }
 
+/*
 function updatePhotosAppear() {
     console.log(photoList.length);
 
@@ -286,7 +407,25 @@ function updatePhotosAppear() {
     }
 
     if ( photoList.length < 5) {
-        document.getElementById("takeSnapshotBtuuon").style.background='#d84a38';
-        document.getElementById("takeSnapshotBtuuon").innerHTML = "拍照";
+        document.getElementById("takeSnapshotButton").style.background='#d84a38';
+        document.getElementById("takeSnapshotButton").innerHTML = "拍照";
     }
+}*/
+
+//-----
+function restartButton_click() {
+    isFaceCompare = false;
+    photoList = ["", "", "", "", ""];
+
+    checkPhotoFulled();
+
+    for (let i = 0; i < 5; i++) {
+        let suffixNum = i + 1;
+        let photoDivName = "photo" + suffixNum.toString();
+        document.getElementById(photoDivName).style.display = 'none'; 
+    }
+
+    document.getElementById('faceCompareDiv').style.display = 'none'; 
+    document.getElementById('mainDiv').style.display = 'block';
+    document.getElementById('photoList').style.display = 'block';
 }

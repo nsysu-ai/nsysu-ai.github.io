@@ -9,3 +9,24 @@
     margin: 0 0 1em 0;
     padding: 0.5em 0.7em 0.6em 0.7em;
 }
+
+.faceImage {
+    width: auto;
+    height: 95px;
+    max-width: 100%;
+	max-height: 100%;
+    border: 3px solid #FF5151;
+    background-color: rgb(34, 34, 34);
+}
+
+.faceCompareImage {
+    display: block;
+    width: 250px;
+    height: auto;
+    max-width: 100%;
+	max-height: 100%;
+    border: 5px solid #0080ff;
+    background-color: rgb(34, 34, 34);
+    margin-left:auto; 
+    margin-right:auto;
+}
