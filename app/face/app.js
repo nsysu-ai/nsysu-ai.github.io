@@ -134,8 +134,6 @@ function gotStream(stream) {
         pollTimerId = setInterval(poll, 1000);
     }
 
-
-
     // Refresh button list in case labels have become available
     return navigator.mediaDevices.enumerateDevices();
 }
@@ -230,38 +228,175 @@ function takeComparedPhoto() {
         let imageData2 = context.canvas.toDataURL("image/png");
         document.getElementById('comparedFaceImage').src = imageData2;
         
-        document.getElementById('faceCompareDiv').style.display = 'block';
-        document.getElementById('mainDiv').style.display = 'none';
-
         resolve(context);
     });
 
-    myPromise.then(clipImageDone, null);
+    myPromise.then(takeComparedPhotoDoneAndUpload, null);
 }
+
+function takeComparedPhotoDoneAndUpload(context) {
+    document.getElementById('showMsg1').style.display = 'none';
+    document.getElementById('progressDiv').style.display = 'block';
+    document.getElementById('progressMsg').innerHTML = "比對中...";
+    document.getElementById('photoList').style.display = 'none';
+    document.getElementById('mainDiv').style.display = 'none';
+
+    document.getElementById('showMsg2').innerHTML = '是同一人?';
+
+    context.canvas.toBlob(function(blob) {
+        blob.name = "test.png";
+        var formData = new FormData();
+        formData.append('vlad_file', blob);
+        formData.append('user_name', userUUID);
+    
+        // 比對照片，判斷是否為同一人?
+        // call validation api
+
+        $.ajax({
+            type: "POST",
+            url: "https://pc-ibtp.rainvisitor.me:8443/validation",
+            data: formData,
+            contentType: false,
+            processData: false,
+            success: function (response) {
+                // upload done
+                console.log("upload done:");
+                console.log(response);
+                console.log("message : " + response["msg"]);
+
+                document.getElementById('progressDiv').style.display = 'none';
+                document.getElementById('faceCompareDiv').style.display = 'block';
+    
+                if (response["msg"] === "accept") {
+                    document.getElementById('showMsg2').innerHTML = '比對結果：是同一人';
+                } else if (response["msg"] === "reject") {
+                    document.getElementById('showMsg2').innerHTML = '比對結果：不是同一人';
+                } else {
+                    document.getElementById('showMsg2').innerHTML = '比對失敗！';
+                }
+            },
+            error: function (response) {
+                // handle error
+                console.log("upload failed:");
+                console.log(response.responseText);
+                document.getElementById('showMsg2').innerHTML = '比對失敗！';
+            },
+        });
+    });
+}
+
+var imgBlobList = ["", "", "", "", ""];
 
 //上傳照片
 function uploadPhotos() {
+    document.getElementById('showMsg1').style.display = 'none';
     document.getElementById('progressDiv').style.display = 'block';
     document.getElementById('progressMsg').innerHTML = "上傳中...";
     document.getElementById('mainDiv').style.display = 'none';
     document.getElementById('photoList').style.display = 'none';
 
+    imgBlobList = ["", "", "", "", ""];
+
+    const myConvertImagesPromise = new Promise((resolve, reject) => {
+        let blob0 = dataURItoBlob(photoList[0]);
+        let blob1 = dataURItoBlob(photoList[1]);
+        let blob2 = dataURItoBlob(photoList[2]);
+        let blob3 = dataURItoBlob(photoList[3]);
+        let blob4 = dataURItoBlob(photoList[4]);
+
+        blob0.name = "0.png";
+        blob1.name = "1.png";
+        blob2.name = "2.png";
+        blob3.name = "3.png";
+        blob4.name = "4.png";
+
+        imgBlobList[0] = blob0;
+        imgBlobList[1] = blob1;
+        imgBlobList[2] = blob2;
+        imgBlobList[3] = blob3;
+        imgBlobList[4] = blob4;
+
+        resolve();
+    });
+
+    myConvertImagesPromise.then(convertImageDone, null);
+}
+
+function convertImageDone() {
+    console.log("imgBlobList : ");
+    console.log(imgBlobList);
+
+    //test url : "http://127.0.0.1:5000/upload"
+
+    var formData = new FormData();
+    formData.append('file0', imgBlobList[0]);
+    formData.append('file1', imgBlobList[1]);
+    formData.append('file2', imgBlobList[2]);
+    formData.append('file3', imgBlobList[3]);
+    formData.append('file4', imgBlobList[4]);
+    formData.append('user_name', userUUID);
+
+    // 上傳 User 的照片(5張)
+    // call upload api
+
+    $.ajax({
+        type: "POST",
+        url: "https://pc-ibtp.rainvisitor.me:8443/upload",
+        data: formData,
+        contentType: false,
+        processData: false,
+        success: function (response) {
+            // upload done
+            console.log("upload done:");
+            console.log(response);
+            console.log("message : " + response["msg"]);
+
+            if (response["msg"] === "finish enroll") {
+                handleUploadedSuccessfully();
+            } else {
+                handleUploadFailed();
+            }
+        },
+        error: function (response) {
+            // handle error
+            console.log("upload failed:");
+            console.log(response.responseText);
+            handleUploadFailed();
+        },
+    });
+}
+
+
+function handleUploadedSuccessfully() {
+    document.getElementById('progressDiv').style.display = 'none';
+    document.getElementById('mainDiv').style.display = 'block';
+
+    document.getElementById('showMsg1').style.color = "#003d79";
+    document.getElementById('showMsg1').style.backgroundColor = "lightblue";
+    document.getElementById('showMsg1').style.display = 'block';
+    document.getElementById('showMsg1').innerHTML = "上傳成功！！";
+
+    document.getElementById("takeSnapshotButton").style.background='#0072e3';
+    document.getElementById("takeSnapshotButton").innerHTML = "拍照 & 比對";
+
+    isFaceCompare = true;
+
     setTimeout(function(){
-        document.getElementById('progressDiv').style.display = 'none';
-        document.getElementById('mainDiv').style.display = 'block';
+        $( "#showMsg1" ).fadeOut(1000);
+    }, 1000);
+}
 
-        document.getElementById('showMsg1').style.display = 'block';
-        document.getElementById('showMsg1').innerHTML = "上傳成功！！";
+function handleUploadFailed() {
+    document.getElementById('progressDiv').style.display = 'none';
+    document.getElementById('mainDiv').style.display = 'block';
 
-        document.getElementById("takeSnapshotButton").style.background='#0072e3';
-        document.getElementById("takeSnapshotButton").innerHTML = "拍照 & 比對";
+    document.getElementById('showMsg1').style.color = "#4d0000";
+    document.getElementById('showMsg1').style.backgroundColor = "#ffd2d2";
+    document.getElementById('showMsg1').style.display = 'block';
+    document.getElementById('showMsg1').innerHTML = "上傳失敗！！";
 
-        isFaceCompare = true;
-
-        setTimeout(function(){
-            $( "#showMsg1" ).fadeOut(1500);
-        }, 1000);
-    }, 2000);
+    document.getElementById('photoList').style.display = 'block';
+    document.getElementById("takeSnapshotButton").innerHTML = "重新上傳";
 }
 
 function handleTakePhoto() {
@@ -269,11 +404,9 @@ function handleTakePhoto() {
 
     const myFirstPromise = new Promise((resolve, reject) => {
         // 執行一些非同步作業，最終呼叫:
-        //
-        //   resolve(someValue); // 實現
+        //    resolve(someValue); // 實現
         // 或
-        //   reject("failure reason"); // 拒絕
-        //
+        //    reject("failure reason"); // 拒絕
 
         let myvideo = document.getElementById('localVideo');
         let tempCanvas = document.createElement('canvas');
@@ -318,6 +451,9 @@ function handleTakePhoto() {
 
 function checkPhotoFulled() {
     $("#showMsg1").hide();
+    document.getElementById('showMsg1').style.color = "#003d79";
+    document.getElementById('showMsg1').style.backgroundColor = "lightblue";
+
     let photoIndex = getCurrentPhotoListIndex();
 
     if (photoIndex >= 0 && photoIndex < 5) {
@@ -327,28 +463,28 @@ function checkPhotoFulled() {
 
     if (photoIndex == 0){
         document.getElementById('showMsg1').innerHTML = "請將臉「正面」朝向鏡頭，並拍照";
-        $("#showMsg1").fadeIn(800);
+        $("#showMsg1").fadeIn(300);
     }
     else if (photoIndex == 1) {
         document.getElementById('showMsg1').innerHTML = "請將臉稍微朝向「右邊」，並拍照";
-        $("#showMsg1").fadeIn(800);
+        $("#showMsg1").fadeIn(300);
     }
     else if (photoIndex == 2) {
         document.getElementById('showMsg1').innerHTML = "請將臉稍微朝向「左邊」，並拍照";
-        $("#showMsg1").fadeIn(800);
+        $("#showMsg1").fadeIn(300);
     }
     else if (photoIndex == 3) {
         document.getElementById('showMsg1').innerHTML = "請將臉稍微朝向「上方」，並拍照";
-        $("#showMsg1").fadeIn(800);
+        $("#showMsg1").fadeIn(300);
     }
     else if (photoIndex == 4) {
         document.getElementById('showMsg1').innerHTML = "請將臉稍微朝向「下方」，並拍照";
-        $("#showMsg1").fadeIn(800);
+        $("#showMsg1").fadeIn(300);
     }
     else {
         document.getElementById("takeSnapshotButton").style.background='#01b468';
         document.getElementById("takeSnapshotButton").innerHTML = "上傳";
-        userUUID = "tmpuser@" + generateUUID();
+        userUUID = "tmpuser_" + generateUUID();
         console.log(userUUID);
     }
 }
@@ -357,31 +493,50 @@ function clipImageDone(context) {
 
 }
 
+function dataURItoBlob(dataURI) {
+    // convert base64/URLEncoded data component to raw binary data held in a string
+    var byteString;
+    if (dataURI.split(',')[0].indexOf('base64') >= 0) {
+        byteString = atob(dataURI.split(',')[1]);
+    } else {
+        byteString = unescape(dataURI.split(',')[1]);
+    }
+
+    // separate out the mime component
+    var mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
+
+    // write the bytes of the string to a typed array
+    var ia = new Uint8Array(byteString.length);
+    for (var i = 0; i < byteString.length; i++) {
+        ia[i] = byteString.charCodeAt(i);
+    }
+
+    return new Blob([ia], {type:mimeString});
+}
+
+
+//---------------
+
 function removePhotoButton_click(btnId) {
     console.log(btnId);
 
     if (btnId === "btn1") {
-        //photoList.splice(0, 1);
         photoList[0] = "";
         document.getElementById('photo1').style.display = 'none';
     }
     else if (btnId === "btn2") {
-        //photoList.splice(1, 1);
         photoList[1] = "";
         document.getElementById('photo2').style.display = 'none';
     }
     else if (btnId === "btn3") {
-        //photoList.splice(2, 1);
         photoList[2] = "";
         document.getElementById('photo3').style.display = 'none';
     } 
     else if (btnId === "btn4") {
-        //photoList.splice(3, 1);
         photoList[3] = "";
         document.getElementById('photo4').style.display = 'none';
     } 
     else if (btnId === "btn5") {
-        //photoList.splice(4, 1);
         photoList[4] = "";
         document.getElementById('photo5').style.display = 'none';
     }
@@ -389,33 +544,13 @@ function removePhotoButton_click(btnId) {
     checkPhotoFulled();
 }
 
-/*
-function updatePhotosAppear() {
-    console.log(photoList.length);
 
-    for (let i = 0; i < photoList.length; i++) {
-        let imageData = photoList[i];
-        let suffixNum = i + 1;
-        let imgDivName = "faceImage" + suffixNum.toString();
-        document.getElementById(imgDivName).src = imageData;
-    }
+//---------------
 
-    for (let i = photoList.length; i < 5; i++) {
-        let suffixNum = i + 1;
-        let photoDivName = "photo" + suffixNum.toString();
-        document.getElementById(photoDivName).style.display = 'none'; 
-    }
-
-    if ( photoList.length < 5) {
-        document.getElementById("takeSnapshotButton").style.background='#d84a38';
-        document.getElementById("takeSnapshotButton").innerHTML = "拍照";
-    }
-}*/
-
-//-----
 function restartButton_click() {
     isFaceCompare = false;
     photoList = ["", "", "", "", ""];
+    imgBlobList = ["", "", "", "", ""];
 
     checkPhotoFulled();
 
@@ -428,4 +563,16 @@ function restartButton_click() {
     document.getElementById('faceCompareDiv').style.display = 'none'; 
     document.getElementById('mainDiv').style.display = 'block';
     document.getElementById('photoList').style.display = 'block';
+    document.getElementById('showMsg2').innerHTML = '是同一人?';
+}
+
+function recomparedButton_click() {
+    document.getElementById('progressDiv').style.display = 'none';
+    document.getElementById('mainDiv').style.display = 'block';
+    document.getElementById('faceCompareDiv').style.display = 'none';
+
+    document.getElementById("takeSnapshotButton").style.background='#0072e3';
+    document.getElementById("takeSnapshotButton").innerHTML = "拍照 & 比對";
+    
+    console.log(userUUID);
 }
