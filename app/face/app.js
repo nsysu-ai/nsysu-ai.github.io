@@ -254,7 +254,7 @@ function takeComparedPhotoDoneAndUpload(context) {
 
         $.ajax({
             type: "POST",
-            url: "https://pc-ibtp.rainvisitor.me:8443/validation",
+            url: "https://ibtp.pochin.top:8443/validation",
             data: formData,
             contentType: false,
             processData: false,
@@ -341,7 +341,7 @@ function convertImageDone() {
 
     $.ajax({
         type: "POST",
-        url: "https://pc-ibtp.rainvisitor.me:8443/upload",
+        url: "https://ibtp.pochin.top:8443/upload",
         data: formData,
         contentType: false,
         processData: false,
