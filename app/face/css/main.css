@@ -163,12 +163,18 @@
 
     #bgv {
         width: 1010px;
-        height: 98%;
+        height: 96%;
         border: 1px solid #adadad;
         margin-left: auto;
         margin-right: auto;
         background-color:#ffffff;
         box-shadow: 2px 2px 3px 3px rgba(0, 0, 0, 0.2);
         border-radius:10px;
+    }
+}
+
+@media screen and (max-height: 760px) {
+    #bgv {
+        height: 760px;
     }
 }
