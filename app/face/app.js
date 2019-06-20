@@ -463,23 +463,23 @@ function checkPhotoFulled() {
 
     if (photoIndex == 0){
         document.getElementById('showMsg1').innerHTML = "請將臉「正面」朝向鏡頭，並拍照";
-        $("#showMsg1").fadeIn(300);
+        $("#showMsg1").fadeIn(150);
     }
     else if (photoIndex == 1) {
         document.getElementById('showMsg1').innerHTML = "請將臉稍微朝向「右邊」，並拍照";
-        $("#showMsg1").fadeIn(300);
+        $("#showMsg1").fadeIn(150);
     }
     else if (photoIndex == 2) {
         document.getElementById('showMsg1').innerHTML = "請將臉稍微朝向「左邊」，並拍照";
-        $("#showMsg1").fadeIn(300);
+        $("#showMsg1").fadeIn(150);
     }
     else if (photoIndex == 3) {
         document.getElementById('showMsg1').innerHTML = "請將臉稍微朝向「上方」，並拍照";
-        $("#showMsg1").fadeIn(300);
+        $("#showMsg1").fadeIn(150);
     }
     else if (photoIndex == 4) {
         document.getElementById('showMsg1').innerHTML = "請將臉稍微朝向「下方」，並拍照";
-        $("#showMsg1").fadeIn(300);
+        $("#showMsg1").fadeIn(150);
     }
     else {
         document.getElementById("takeSnapshotButton").style.background='#01b468';
