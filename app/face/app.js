@@ -128,10 +128,10 @@ function gotStream(stream) {
         // desktop
         //console.log("desktop");
 
-        if (pollTimerId) {
-            clearInterval(pollTimerId);
-        }
-        pollTimerId = setInterval(poll, 1000);
+        // if (pollTimerId) {
+        //     clearInterval(pollTimerId);
+        // }
+        // pollTimerId = setInterval(poll, 1000);
     }
 
     // Refresh button list in case labels have become available
