@@ -382,7 +382,7 @@ function handleUploadedSuccessfully() {
     isFaceCompare = true;
 
     setTimeout(function(){
-        $( "#showMsg1" ).fadeOut(1000);
+        $( "#showMsg1" ).fadeOut(2000);
     }, 1000);
 }
 
@@ -463,23 +463,23 @@ function checkPhotoFulled() {
 
     if (photoIndex == 0){
         document.getElementById('showMsg1').innerHTML = "請將臉「正面」朝向鏡頭，並拍照";
-        $("#showMsg1").fadeIn(150);
+        $("#showMsg1").fadeIn(200);
     }
     else if (photoIndex == 1) {
         document.getElementById('showMsg1').innerHTML = "請將臉稍微朝向「右邊」，並拍照";
-        $("#showMsg1").fadeIn(150);
+        $("#showMsg1").fadeIn(200);
     }
     else if (photoIndex == 2) {
         document.getElementById('showMsg1').innerHTML = "請將臉稍微朝向「左邊」，並拍照";
-        $("#showMsg1").fadeIn(150);
+        $("#showMsg1").fadeIn(200);
     }
     else if (photoIndex == 3) {
         document.getElementById('showMsg1').innerHTML = "請將臉稍微朝向「上方」，並拍照";
-        $("#showMsg1").fadeIn(150);
+        $("#showMsg1").fadeIn(200);
     }
     else if (photoIndex == 4) {
         document.getElementById('showMsg1').innerHTML = "請將臉稍微朝向「下方」，並拍照";
-        $("#showMsg1").fadeIn(150);
+        $("#showMsg1").fadeIn(200);
     }
     else {
         document.getElementById("takeSnapshotButton").style.background='#01b468';
