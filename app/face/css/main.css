@@ -173,8 +173,8 @@
     }
 }
 
-@media screen and (max-height: 760px) {
+@media screen and (max-height: 740px) {
     #bgv {
-        height: 760px;
+        height: 740px;
     }
 }
