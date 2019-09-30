@@ -225,7 +225,7 @@ function takeComparedPhoto() {
         tempCanvas.height = height;
 
         context.drawImage(myvideo, x, y, width, height, 0, 0, width, height);
-        let imageData2 = context.canvas.toDataURL("image/png");
+        let imageData2 = context.canvas.toDataURL("image/jpeg");
         document.getElementById('comparedFaceImage').src = imageData2;
         
         resolve(context);
@@ -266,13 +266,18 @@ function takeComparedPhotoDoneAndUpload(context) {
 
                 document.getElementById('progressDiv').style.display = 'none';
                 document.getElementById('faceCompareDiv').style.display = 'block';
-    
-                if (response["msg"] === "accept") {
-                    document.getElementById('showMsg2').innerHTML = '比對結果：是同一人';
-                } else if (response["msg"] === "reject") {
-                    document.getElementById('showMsg2').innerHTML = '比對結果：不是同一人';
+                
+                if (response["error"] === undefined || response["error"] === null) {
+                    if (response["msg"] === "accept") {
+                        document.getElementById('showMsg2').innerHTML = '比對結果：是同一人';
+                    } else if (response["msg"] === "reject") {
+                        document.getElementById('showMsg2').innerHTML = '比對結果：不是同一人';
+                    } else {
+                        document.getElementById('showMsg2').innerHTML = '比對失敗！';
+                    }
                 } else {
-                    document.getElementById('showMsg2').innerHTML = '比對失敗！';
+                    console.log("ERROR : " + response["error"]);
+                    document.getElementById('showMsg2').innerHTML = 'ERROR：' + response["msg"];
                 }
             },
             error: function (response) {
@@ -351,9 +356,10 @@ function convertImageDone() {
             console.log(response);
             console.log("message : " + response["msg"]);
 
-            if (response["msg"] === "finish enroll") {
+            if (response["error"] === undefined || response["error"] === null) {
                 handleUploadedSuccessfully();
             } else {
+                console.log("ERROR CODE: " + response["error"]);
                 handleUploadFailed();
             }
         },
@@ -429,7 +435,7 @@ function handleTakePhoto() {
 
         if (photoIndex >= 0 && photoIndex < 5) {
             context.drawImage(myvideo, x, y, width, height, 0, 0, width, height);
-            let imageData = context.canvas.toDataURL("image/png");
+            let imageData = context.canvas.toDataURL("image/jpeg");
             let suffixNum = photoIndex + 1;
             let imgDivName = "faceImage" + suffixNum.toString();
             let photoDivName = "photo" + suffixNum.toString();
