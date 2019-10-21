@@ -207,6 +207,8 @@ function takeSnapshotButton_click() {
     }
 }
 
+var aComparedImageData = null;
+
 function takeComparedPhoto() {
     let imageData1 = photoList[0];
     document.getElementById('selfFaceImage').src = imageData1;
@@ -227,7 +229,8 @@ function takeComparedPhoto() {
         context.drawImage(myvideo, x, y, width, height, 0, 0, width, height);
         let imageData2 = context.canvas.toDataURL("image/jpeg");
         document.getElementById('comparedFaceImage').src = imageData2;
-        
+        aComparedImageData = imageData2;
+
         resolve(context);
     });
 
@@ -243,10 +246,11 @@ function takeComparedPhotoDoneAndUpload(context) {
 
     document.getElementById('showMsg2').innerHTML = '是同一人?';
 
-    context.canvas.toBlob(function(blob) {
-        blob.name = "test.jpg";
+    //context.canvas.toBlob(function(blob) {
+        let test_blob0 = dataURItoBlob(aComparedImageData);
+        test_blob0.name = "test.jpg";
         var formData = new FormData();
-        formData.append('vlad_file', blob);
+        formData.append('vlad_file', test_blob0);
         formData.append('user_name', userUUID);
     
         // 比對照片，判斷是否為同一人?
@@ -287,7 +291,7 @@ function takeComparedPhotoDoneAndUpload(context) {
                 document.getElementById('showMsg2').innerHTML = '比對失敗！';
             },
         });
-    });
+    //});
 }
 
 var imgBlobList = ["", "", "", "", ""];
@@ -309,11 +313,11 @@ function uploadPhotos() {
         let blob3 = dataURItoBlob(photoList[3]);
         let blob4 = dataURItoBlob(photoList[4]);
 
-        blob0.name = "0.png";
-        blob1.name = "1.png";
-        blob2.name = "2.png";
-        blob3.name = "3.png";
-        blob4.name = "4.png";
+        blob0.name = "0.jpg";
+        blob1.name = "1.jpg";
+        blob2.name = "2.jpg";
+        blob3.name = "3.jpg";
+        blob4.name = "4.jpg";
 
         imgBlobList[0] = blob0;
         imgBlobList[1] = blob1;
