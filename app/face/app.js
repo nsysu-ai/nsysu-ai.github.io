@@ -246,52 +246,51 @@ function takeComparedPhotoDoneAndUpload(context) {
 
     document.getElementById('showMsg2').innerHTML = '是同一人?';
 
-    //context.canvas.toBlob(function(blob) {
-        let test_blob0 = dataURItoBlob(aComparedImageData);
-        test_blob0.name = "test.jpg";
-        var formData = new FormData();
-        formData.append('vlad_file', test_blob0);
-        formData.append('user_name', userUUID);
     
-        // 比對照片，判斷是否為同一人?
-        // call validation api
+    let test_blob0 = dataURItoBlob(aComparedImageData);
+    test_blob0.name = "test.jpg";
+    var formData = new FormData();
+    formData.append('vlad_file', test_blob0);
+    formData.append('user_name', userUUID);
 
-        $.ajax({
-            type: "POST",
-            url: "https://ibtp.pochin.top:8443/validation",
-            data: formData,
-            contentType: false,
-            processData: false,
-            success: function (response) {
-                // upload done
-                console.log("upload done:");
-                console.log(response);
-                console.log("message : " + response["msg"]);
+    // 比對照片，判斷是否為同一人?
+    // call validation api
 
-                document.getElementById('progressDiv').style.display = 'none';
-                document.getElementById('faceCompareDiv').style.display = 'block';
-                
-                if (response["error"] === undefined || response["error"] === null) {
-                    if (response["msg"] === "accept") {
-                        document.getElementById('showMsg2').innerHTML = '比對結果：是同一人';
-                    } else if (response["msg"] === "reject") {
-                        document.getElementById('showMsg2').innerHTML = '比對結果：不是同一人';
-                    } else {
-                        document.getElementById('showMsg2').innerHTML = '比對失敗！';
-                    }
+    $.ajax({
+        type: "POST",
+        url: "https://ibtp.pochin.top:8443/validation",
+        data: formData,
+        contentType: false,
+        processData: false,
+        success: function (response) {
+            // upload done
+            console.log("upload done:");
+            console.log(response);
+            console.log("message : " + response["msg"]);
+
+            document.getElementById('progressDiv').style.display = 'none';
+            document.getElementById('faceCompareDiv').style.display = 'block';
+            
+            if (response["error"] === undefined || response["error"] === null) {
+                if (response["msg"] === "accept") {
+                    document.getElementById('showMsg2').innerHTML = '比對結果：是同一人';
+                } else if (response["msg"] === "reject") {
+                    document.getElementById('showMsg2').innerHTML = '比對結果：不是同一人';
                 } else {
-                    console.log("ERROR : " + response["error"]);
-                    document.getElementById('showMsg2').innerHTML = 'ERROR：' + response["msg"];
+                    document.getElementById('showMsg2').innerHTML = '比對失敗！';
                 }
-            },
-            error: function (response) {
-                // handle error
-                console.log("upload failed:");
-                console.log(response.responseText);
-                document.getElementById('showMsg2').innerHTML = '比對失敗！';
-            },
-        });
-    //});
+            } else {
+                console.log("ERROR : " + response["error"]);
+                document.getElementById('showMsg2').innerHTML = 'ERROR：' + response["msg"];
+            }
+        },
+        error: function (response) {
+            // handle error
+            console.log("upload failed:");
+            console.log(response.responseText);
+            document.getElementById('showMsg2').innerHTML = '比對失敗！';
+        },
+    });
 }
 
 var imgBlobList = ["", "", "", "", ""];
