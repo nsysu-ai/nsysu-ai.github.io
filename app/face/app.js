@@ -244,7 +244,7 @@ function takeComparedPhotoDoneAndUpload(context) {
     document.getElementById('showMsg2').innerHTML = '是同一人?';
 
     context.canvas.toBlob(function(blob) {
-        blob.name = "test.png";
+        blob.name = "test.jpg";
         var formData = new FormData();
         formData.append('vlad_file', blob);
         formData.append('user_name', userUUID);
