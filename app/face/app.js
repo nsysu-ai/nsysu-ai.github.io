@@ -10,32 +10,34 @@ var FaceCompY = 0;
 var FaceCompWidth = 0;
 var FaceCompHeight = 0;
 
-poll = function() {
+poll = function () {
     var w = localVideo.videoWidth;
     var h = localVideo.videoHeight;
     var canvas = document.createElement('canvas');
-    canvas.width  = w;
+    canvas.width = w;
     canvas.height = h;
     var ctx = canvas.getContext('2d');
     ctx.drawImage(localVideo, 0, 0, w, h);
-    var comp = ccv.detect_objects({ "canvas" : ccv.grayscale(canvas),
-                                    "cascade" : cascade,
-                                    "interval" : 5,
-                                    "min_neighbors" : 1 });
+    var comp = ccv.detect_objects({
+        "canvas": ccv.grayscale(canvas),
+        "cascade": cascade,
+        "interval": 5,
+        "min_neighbors": 1
+    });
     /* draw detected area */
     localCanvas.width = localVideo.clientWidth;
     localCanvas.height = localVideo.clientHeight;
     var ctx2 = localCanvas.getContext('2d');
     ctx2.lineWidth = 2;
     ctx2.lineJoin = "round";
-    ctx2.clearRect (0, 0, localCanvas.width,localCanvas.height);
+    ctx2.clearRect(0, 0, localCanvas.width, localCanvas.height);
     var x_offset = 0, y_offset = 0, x_scale = 1, y_scale = 1;
     if (localVideo.clientWidth * localVideo.videoHeight > localVideo.videoWidth * localVideo.clientHeight) {
         x_offset = (localVideo.clientWidth - localVideo.clientHeight *
-                    localVideo.videoWidth / localVideo.videoHeight) / 2;
+            localVideo.videoWidth / localVideo.videoHeight) / 2;
     } else {
         y_offset = (localVideo.clientHeight - localVideo.clientWidth *
-                    localVideo.videoHeight / localVideo.videoWidth) / 2;
+            localVideo.videoHeight / localVideo.videoWidth) / 2;
     }
     x_scale = (localVideo.clientWidth - x_offset * 2) / localVideo.videoWidth;
     y_scale = (localVideo.clientHeight - y_offset * 2) / localVideo.videoHeight;
@@ -77,10 +79,10 @@ navigator.mediaDevices.enumerateDevices().then(gotDevices).catch(handleError);
 
 function gotDevices(deviceInfos) {
     // Handles being called several times to update labels. Preserve values.
-    var values = selectors.map(function(select) {
+    var values = selectors.map(function (select) {
         return select.value;
     });
-    selectors.forEach(function(select) {
+    selectors.forEach(function (select) {
         while (select.firstChild) {
             select.removeChild(select.firstChild);
         }
@@ -89,15 +91,15 @@ function gotDevices(deviceInfos) {
         var deviceInfo = deviceInfos[i];
         var option = document.createElement('option');
         option.value = deviceInfo.deviceId;
-        
+
         if (deviceInfo.kind === 'videoinput') {
             option.text = deviceInfo.label || 'camera ' + (videoSelect.length + 1);
             videoSelect.appendChild(option);
         }
     }
-    
-    selectors.forEach(function(select, selectorIndex) {
-        if (Array.prototype.slice.call(select.childNodes).some(function(n) {
+
+    selectors.forEach(function (select, selectorIndex) {
+        if (Array.prototype.slice.call(select.childNodes).some(function (n) {
             return n.value === values[selectorIndex];
         })) {
             select.value = values[selectorIndex];
@@ -119,7 +121,7 @@ function gotStream(stream) {
     localVideo.style.opacity = 1;
     localVideo.srcObject = stream;
     localStream = stream;
-    
+
 
     if (/Mobi/.test(navigator.userAgent)) {
         // mobile
@@ -140,13 +142,13 @@ function gotStream(stream) {
 
 function start() {
     if (window.stream) {
-        window.stream.getTracks().forEach(function(track) {
+        window.stream.getTracks().forEach(function (track) {
             track.stop();
         });
     }
     var videoSource = videoSelect.value;
     var constraints = {
-        video: {deviceId: videoSource ? {exact: videoSource} : undefined}
+        video: { deviceId: videoSource ? { exact: videoSource } : undefined }
     };
 
     navigator.mediaDevices.getUserMedia(constraints).then(gotStream).then(gotDevices).catch(handleError);
@@ -158,7 +160,7 @@ videoSelect.onchange = start;
 
 // start
 var mainDiv = document.getElementById("mainDiv");
-mainDiv.style.left = (1200/2 - 500/2) + "px";
+mainDiv.style.left = (1200 / 2 - 500 / 2) + "px";
 var userUUID = null;
 
 start();
@@ -168,7 +170,7 @@ start();
 
 function generateUUID() {
     var d = Date.now();
-    if (typeof performance !== 'undefined' && typeof performance.now === 'function'){
+    if (typeof performance !== 'undefined' && typeof performance.now === 'function') {
         d += performance.now(); //use high-precision timer if available
     }
     return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
@@ -222,7 +224,7 @@ function takeComparedPhoto() {
         let y = 0;
         let width = myvideo.videoWidth;
         let height = myvideo.videoHeight;
-    
+
         tempCanvas.width = width;
         tempCanvas.height = height;
 
@@ -246,7 +248,7 @@ function takeComparedPhotoDoneAndUpload(context) {
 
     document.getElementById('showMsg2').innerHTML = '是同一人?';
 
-    
+
     let test_blob0 = dataURItoBlob(aComparedImageData);
     test_blob0.name = "test.jpg";
     var formData = new FormData();
@@ -258,7 +260,8 @@ function takeComparedPhotoDoneAndUpload(context) {
 
     $.ajax({
         type: "POST",
-        url: "https://ibtp.pochin.top:8443/validation",
+        url: "140.117.75.46:8443/validation",
+        // url: "https://ibtp.pochin.top:8443/validation",
         data: formData,
         contentType: false,
         processData: false,
@@ -270,7 +273,7 @@ function takeComparedPhotoDoneAndUpload(context) {
 
             document.getElementById('progressDiv').style.display = 'none';
             document.getElementById('faceCompareDiv').style.display = 'block';
-            
+
             if (response["error"] === undefined || response["error"] === null) {
                 if (response["msg"] === "accept") {
                     document.getElementById('showMsg2').innerHTML = '比對結果：是同一人';
@@ -349,7 +352,8 @@ function convertImageDone() {
 
     $.ajax({
         type: "POST",
-        url: "https://ibtp.pochin.top:8443/upload",
+        url: "140.117.75.46:8443/upload",
+        // url: "https://ibtp.pochin.top:8443/upload",
         data: formData,
         contentType: false,
         processData: false,
@@ -385,13 +389,13 @@ function handleUploadedSuccessfully() {
     document.getElementById('showMsg1').style.display = 'block';
     document.getElementById('showMsg1').innerHTML = "上傳成功！！";
 
-    document.getElementById("takeSnapshotButton").style.background='#0072e3';
+    document.getElementById("takeSnapshotButton").style.background = '#0072e3';
     document.getElementById("takeSnapshotButton").innerHTML = "拍照 & 比對";
 
     isFaceCompare = true;
 
-    setTimeout(function(){
-        $( "#showMsg1" ).fadeOut(2000);
+    setTimeout(function () {
+        $("#showMsg1").fadeOut(2000);
     }, 1000);
 }
 
@@ -420,7 +424,7 @@ function handleTakePhoto() {
         let myvideo = document.getElementById('localVideo');
         let tempCanvas = document.createElement('canvas');
         let context = tempCanvas.getContext('2d');
-    
+
         // let x = FaceCompX - (FaceCompWidth/4);
         // let y = FaceCompY - (FaceCompHeight/4)
         // let width = FaceCompWidth + (FaceCompWidth/4)*2;
@@ -430,7 +434,7 @@ function handleTakePhoto() {
         let y = 0;
         let width = myvideo.videoWidth;
         let height = myvideo.videoHeight;
-    
+
         tempCanvas.width = width;
         tempCanvas.height = height;
 
@@ -443,10 +447,10 @@ function handleTakePhoto() {
             let imgDivName = "faceImage" + suffixNum.toString();
             let photoDivName = "photo" + suffixNum.toString();
             document.getElementById(imgDivName).src = imageData;
-            document.getElementById(photoDivName).style.display = 'block';  
+            document.getElementById(photoDivName).style.display = 'block';
 
             photoList[photoIndex] = imageData;
-            
+
             checkPhotoFulled();
 
             resolve(context);
@@ -466,11 +470,11 @@ function checkPhotoFulled() {
     let photoIndex = getCurrentPhotoListIndex();
 
     if (photoIndex >= 0 && photoIndex < 5) {
-        document.getElementById("takeSnapshotButton").style.background='#d84a38';
+        document.getElementById("takeSnapshotButton").style.background = '#d84a38';
         document.getElementById("takeSnapshotButton").innerHTML = "拍照";
     }
 
-    if (photoIndex == 0){
+    if (photoIndex == 0) {
         document.getElementById('showMsg1').innerHTML = "請將臉「正面」朝向鏡頭，並拍照";
         $("#showMsg1").fadeIn(200);
     }
@@ -491,7 +495,7 @@ function checkPhotoFulled() {
         $("#showMsg1").fadeIn(200);
     }
     else {
-        document.getElementById("takeSnapshotButton").style.background='#01b468';
+        document.getElementById("takeSnapshotButton").style.background = '#01b468';
         document.getElementById("takeSnapshotButton").innerHTML = "上傳";
         userUUID = "tmpuser_" + generateUUID();
         console.log(userUUID);
@@ -520,7 +524,7 @@ function dataURItoBlob(dataURI) {
         ia[i] = byteString.charCodeAt(i);
     }
 
-    return new Blob([ia], {type:mimeString});
+    return new Blob([ia], { type: mimeString });
 }
 
 
@@ -540,11 +544,11 @@ function removePhotoButton_click(btnId) {
     else if (btnId === "btn3") {
         photoList[2] = "";
         document.getElementById('photo3').style.display = 'none';
-    } 
+    }
     else if (btnId === "btn4") {
         photoList[3] = "";
         document.getElementById('photo4').style.display = 'none';
-    } 
+    }
     else if (btnId === "btn5") {
         photoList[4] = "";
         document.getElementById('photo5').style.display = 'none';
@@ -566,10 +570,10 @@ function restartButton_click() {
     for (let i = 0; i < 5; i++) {
         let suffixNum = i + 1;
         let photoDivName = "photo" + suffixNum.toString();
-        document.getElementById(photoDivName).style.display = 'none'; 
+        document.getElementById(photoDivName).style.display = 'none';
     }
 
-    document.getElementById('faceCompareDiv').style.display = 'none'; 
+    document.getElementById('faceCompareDiv').style.display = 'none';
     document.getElementById('mainDiv').style.display = 'block';
     document.getElementById('photoList').style.display = 'block';
     document.getElementById('showMsg2').innerHTML = '是同一人?';
@@ -580,8 +584,8 @@ function recomparedButton_click() {
     document.getElementById('mainDiv').style.display = 'block';
     document.getElementById('faceCompareDiv').style.display = 'none';
 
-    document.getElementById("takeSnapshotButton").style.background='#0072e3';
+    document.getElementById("takeSnapshotButton").style.background = '#0072e3';
     document.getElementById("takeSnapshotButton").innerHTML = "拍照 & 比對";
-    
+
     console.log(userUUID);
 }
