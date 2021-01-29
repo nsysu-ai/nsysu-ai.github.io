@@ -260,7 +260,7 @@ function takeComparedPhotoDoneAndUpload(context) {
 
     $.ajax({
         type: "POST",
-        url: "140.117.75.46:8443/validation",
+        url: "140.117.75.46:8449/validation",
         // url: "https://ibtp.pochin.top:8443/validation",
         data: formData,
         contentType: false,
@@ -352,7 +352,7 @@ function convertImageDone() {
 
     $.ajax({
         type: "POST",
-        url: "140.117.75.46:8443/upload",
+        url: "140.117.75.46:8449/upload",
         // url: "https://ibtp.pochin.top:8443/upload",
         data: formData,
         contentType: false,
