@@ -352,7 +352,7 @@ function convertImageDone() {
 
     $.ajax({
         type: "POST",
-        url: "https://140.117.75.46:8449/upload",
+        url: "https://datasci.mis.nsysu.edu.tw:8449/upload",
         // url: "https://ibtp.pochin.top:8443/upload",
         data: formData,
         contentType: false,
